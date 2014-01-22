@@ -14,7 +14,7 @@ import org.paint.model.Element;
 
 @XmlRootElement
 public class Cache implements Serializable {
-
+  
     private Map<Long, Element> data = new HashMap<>();
 
     public Cache() {
@@ -49,5 +49,9 @@ public class Cache implements Serializable {
 
     void clear() {
         data.clear();
+    }
+
+    void delete(Element e) {
+        data.remove(e.getId());
     }
 }

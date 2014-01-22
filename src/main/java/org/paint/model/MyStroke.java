@@ -17,7 +17,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class MyStroke implements Serializable {
 
-    private float strokeWidth = 10;
+    private float strokeWidth = 5;
     private int cap = BasicStroke.CAP_ROUND;
     private int strokeJoin = BasicStroke.JOIN_ROUND;
 

@@ -7,7 +7,9 @@ package org.paint.model;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import javax.persistence.Entity;
+import org.paint.App;
 
 /**
  *
@@ -15,7 +17,7 @@ import javax.persistence.Entity;
  */
 //@XmlType
 @Entity
-public class Circle extends Element {
+public class Circle extends ElementWidthHeight {
 
     public Circle() {
     }
@@ -29,12 +31,22 @@ public class Circle extends Element {
     }
 
     @Override
-    public void myPaint(Graphics2D g) {
-        super.myPaint(g);
+    public double distance(Point p) {
+        return p.distance(getPosition().getX() + getWidth() / 2, getPosition().getY());
+    }
+
+    @Override
+    public void myPaint(Graphics2D g, boolean obrys) {
+        g.setColor(new Color(getRGBcolor()));
         if (isFill()) {
-            g.fillOval(getPosition().getX(), getPosition().getY(), width, height);
+            g.fillOval(getPosition().getX(), getPosition().getY(), getWidth(), getHeight());
         } else {
-            g.drawOval(getPosition().getX(), getPosition().getY(), width, height);
+            if (obrys) {
+                g.setStroke(App.BASIC_STROKE);
+                g.drawRect(getPosition().getX(), getPosition().getY(), getWidth(), getHeight());
+            }
+            g.setStroke(getMyStroke().getStroke());
+            g.drawOval(getPosition().getX(), getPosition().getY(), getWidth(), getHeight());
         }
     }
 

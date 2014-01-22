@@ -5,9 +5,9 @@
  */
 package org.paint.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -60,21 +60,23 @@ public class GraphPanel extends JPanel implements Observer {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                Graphics g = GraphPanel.this.getGraphics();
-                if (elm instanceof Polyline) {
-                    Polyline pl = (Polyline) elm;
-                    pl.addPos(e.getX(), e.getY());
-                } else {
-                    g.setXORMode(Color.GREEN);
+                if (!App.INST.isSelectionMode()) {
+                    Graphics2D g = (Graphics2D) GraphPanel.this.getGraphics();
                     if (elm != null) {
-                        elm.paint(g);
+                        g.setXORMode(elm.getXORColor());
+                        elm.myPaint(g, true);
                     }
-                    if (AbstractElementFactory.INST == null) {
+                    if (elm instanceof Polyline) {
+                        Polyline pl = (Polyline) elm;
+                        pl.addPos(e.getX(), e.getY());
+                    } else if (e.getPoint().distance(ref.getX(), ref.getY()) > 5) {
                         elm = AbstractElementFactory.INST.createElement(ref, fix(e.getPoint()));
                     }
+                    if (elm != null) {
+                        g.setXORMode(elm.getXORColor());
+                        elm.myPaint(g, true);
+                    }
                 }
-                if (elm!=null)
-                elm.paint(g);
             }
         });
         addMouseListener(new MouseAdapter() {
@@ -88,7 +90,7 @@ public class GraphPanel extends JPanel implements Observer {
             @Override
             public void mouseReleased(MouseEvent e) {
                 try {
-                    if (AbstractElementFactory.INST == null) {
+                    if (App.INST.isSelectionMode()) {
                         App.INST.setSelected(DAO.INST.find(e.getPoint()));
                     } else if (elm instanceof Polyline) {
                         Polyline pl = (Polyline) elm;

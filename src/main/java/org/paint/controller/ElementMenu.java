@@ -74,7 +74,7 @@ public class ElementMenu extends JMenu {
         add(rb = new JRadioButtonMenuItem(new AbstractAction("Select") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AbstractElementFactory.INST = null;
+                App.INST.setSelectionMode(((JRadioButtonMenuItem) e.getSource()).getModel().isSelected());
             }
         }));
         bg.add(rb);

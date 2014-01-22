@@ -1,5 +1,6 @@
 package org.paint;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Observable;
@@ -18,16 +19,19 @@ import org.paint.view.MainFrame;
  */
 public class App extends Observable {
 
+    public static final Color XOR_COLOR = Color.RED;
+    public static final BasicStroke BASIC_STROKE = new BasicStroke();
+    public static final App INST = new App();
+
     private App() {
     }
-
-    public static final App INST = new App();
 
     private MainFrame mainFrame;
     private boolean fill = false;
     private MyStroke myStroke = new MyStroke();
     private Color color = Color.BLACK;
     private Element selected;
+    private boolean selectionMode;
 
     public static void main(String[] args) {
         ArgEnum argEnum = ArgEnum.sql;
@@ -90,7 +94,7 @@ public class App extends Observable {
      * @return the fill
      */
     public MyStroke getActualStroke() {
-         return getMyStroke();
+        return getMyStroke();
     }
 
     /**
@@ -105,6 +109,10 @@ public class App extends Observable {
      */
     public Color getColor() {
         return color;
+    }
+
+    public Color getXORColor() {
+        return new Color(~color.getRGB());
     }
 
     /**
@@ -147,5 +155,20 @@ public class App extends Observable {
      */
     public void setSelected(Element selected) {
         this.selected = selected;
+    }
+
+
+    /**
+     * @return the selectionMode
+     */
+    public boolean isSelectionMode() {
+        return selectionMode;
+    }
+
+    /**
+     * @param selectionMode the selectionMode to set
+     */
+    public void setSelectionMode(boolean selectionMode) {
+        this.selectionMode = selectionMode;
     }
 }

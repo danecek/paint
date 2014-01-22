@@ -7,6 +7,7 @@ package org.paint.resource;
 
 import java.awt.Point;
 import java.util.Collection;
+import org.paint.App;
 import org.paint.model.Element;
 
 /**
@@ -34,16 +35,27 @@ public abstract class DAO {
     }
 
     public Element find(Point p) {
+        double minDist = Double.MAX_VALUE;
+        Element sel = null;
         for (Element e : cache.values()) {
-            if (p.distance(e.getPosition().getX(), e.getPosition().getY()) < 10) {
-                return e;
+            double d = e.distance(p);
+            if (d < minDist) {
+                minDist = d;
+                sel = e;
             }
         }
-        return null;
+        return sel;
     }
 
     public int size() {
         return cache.size();
+    }
+
+    public void delete() {
+        Element e = App.INST.getSelected();
+        if (e != null) {
+            cache.delete(e);
+        }
     }
 
 }

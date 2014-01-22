@@ -21,10 +21,4 @@ public class CircleFactory extends AbstractElementFactory {
                 width(p, point), height(p, point));
     }
 
-//    @Override
-//    public Element createElement(Point p) {
-//        return new Circle(ref(p, point), 
-//                App.INST.getColor(), App.INST.getActualStroke(), 
-//                0, 0);
-//    }
 }

@@ -12,6 +12,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import org.paint.App;
 
 /**
  *
@@ -39,9 +40,21 @@ public class Line extends Element {
     }
 
     @Override
-    public void myPaint(Graphics2D g) {
-        super.myPaint(g);
-        g.drawLine(getPosition().getX(), getPosition().getY(), getLineEnd().getX(), getLineEnd().getY());
+    public void myPaint(Graphics2D g, boolean obrys) {
+        g.setColor(new Color(getRGBcolor()));
+        if (isFill()) {
+            g.setStroke(App.BASIC_STROKE);
+            g.fillOval(getPosition().getX(), getPosition().getY(), getWidth(), getHeight());
+        } else {
+            if (obrys) {
+                g.setStroke(App.BASIC_STROKE);
+                g.drawRect(Math.min(getPosition().getX(), lineEnd.getX()),
+                        Math.min(getPosition().getY(), lineEnd.getY()),
+                        getWidth(), getHeight());
+            }
+            g.setStroke(getMyStroke().getStroke());
+            g.drawLine(getPosition().getX(), getPosition().getY(), getLineEnd().getX(), getLineEnd().getY());
+        }
     }
 
     /**
@@ -56,6 +69,16 @@ public class Line extends Element {
      */
     public void setLineEnd(Pos end) {
         this.lineEnd = end;
+    }
+
+    @Override
+    public int getWidth() {
+        return Math.abs(getPosition().getX() - lineEnd.getX());
+    }
+
+    @Override
+    public int getHeight() {
+        return Math.abs(getPosition().getY() - lineEnd.getY());
     }
 
 }

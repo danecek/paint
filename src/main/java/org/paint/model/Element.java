@@ -8,6 +8,7 @@ package org.paint.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.UUID;
 import javax.persistence.Embedded;
@@ -22,7 +23,7 @@ import org.paint.App;
  */
 @Entity
 public abstract class Element implements Serializable {
-    
+
     @Id
     @GeneratedValue
     private Long id;
@@ -30,8 +31,6 @@ public abstract class Element implements Serializable {
     private Pos position;
     private int RGBcolor;
     private boolean fill;
-    protected int height;
-    protected int width;
     @Embedded
     private MyStroke myStroke;
 
@@ -45,8 +44,6 @@ public abstract class Element implements Serializable {
         this.RGBcolor = color.getRGB();
         this.fill = fill;
         this.myStroke = myStroke;
-        this.width = width;
-        this.height = height;
     }
 
     public Element(Pos ref, Color color, boolean fill, MyStroke myStroke, int width, int height) {
@@ -61,19 +58,19 @@ public abstract class Element implements Serializable {
         this.id = id;
     }
 
-
-    public void myPaint(Graphics2D g) {
-        if (App.INST.getSelected() == this) {
-            g.drawRect(getPosition().getX(), getPosition().getY(), width, height);
-        }
+    public void myPaint(Graphics2D g, boolean obrys) {
         g.setColor(new Color(getRGBcolor()));
         if (!isFill()) {
+            if (obrys) {
+                g.setStroke(App.BASIC_STROKE);
+                g.drawRect(getPosition().getX(), getPosition().getY(), getWidth(), getHeight());
+            }
             g.setStroke(myStroke.getStroke());
         }
     }
 
     public void paint(Graphics g) {
-        myPaint((Graphics2D) g);
+        myPaint((Graphics2D) g, App.INST.getSelected() == this);
     }
 
     /**
@@ -83,6 +80,17 @@ public abstract class Element implements Serializable {
         return RGBcolor;
     }
 
+    public Color getXORColor() {
+        Color c = getColor();
+        return new Color(255- c.getRed(), 255- c.getGreen(), 255- c.getBlue());
+
+    }
+    
+        public Color getColor() {
+        return new Color(RGBcolor);
+
+    }
+
     /**
      * @param color the RGBcolor to set
      */
@@ -90,30 +98,12 @@ public abstract class Element implements Serializable {
         this.RGBcolor = color;
     }
 
-    public int getHeight() {
-        return height;
-    }
+    public abstract int getHeight();
 
     /**
      * @return the width
      */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * @param height the height to set
-     */
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    /**
-     * @param width the width to set
-     */
-    public void setWidth(int width) {
-        this.width = width;
-    }
+    public abstract int getWidth();
 
     /**
      * @return the myStroke
@@ -155,6 +145,10 @@ public abstract class Element implements Serializable {
      */
     public void setFill(boolean fill) {
         this.fill = fill;
+    }
+
+    public double distance(Point p) {
+        return p.distance(getPosition().getX(), getPosition().getY());
     }
 
 }

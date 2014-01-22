@@ -5,11 +5,9 @@
  */
 package org.paint.controller;
 
-import org.paint.controller.ClearAction;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JSeparator;
-import org.paint.controller.ExitAction;
 
 /**
  *
@@ -22,6 +20,7 @@ public class FileMenu extends JMenu {
     public FileMenu() {
         super("File");
         add(ClearAction.INST);
+        add(DeleteSelectedAction.INST);
         add(new JSeparator());
         add(ExitAction.INST);
     }
