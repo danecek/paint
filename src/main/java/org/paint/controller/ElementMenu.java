@@ -12,6 +12,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 import org.paint.model.AbstractElementFactory;
 import org.paint.model.CircleFactory;
 import org.paint.model.RectangleFactory;
@@ -41,6 +42,7 @@ public class ElementMenu extends JMenu {
                         ((JCheckBoxMenuItem) e.getSource()).getModel().isSelected());
             }
         }));
+        add(new JSeparator());
         JRadioButtonMenuItem rb;
         add(rb = new JRadioButtonMenuItem(new AbstractAction(Circle.class.getSimpleName()) {
             @Override
@@ -74,10 +76,11 @@ public class ElementMenu extends JMenu {
         add(rb = new JRadioButtonMenuItem(new AbstractAction("Select") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                App.INST.setSelectionMode(((JRadioButtonMenuItem) e.getSource()).getModel().isSelected());
+                AbstractElementFactory.INST = null;
             }
         }));
         bg.add(rb);
+        add(new JSeparator());
         add(new ColorMenuItem());
     }
 

@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Observable;
+import org.paint.model.AbstractElementFactory;
 import org.paint.model.Element;
 import org.paint.model.MyStroke;
 import org.paint.resource.DAO;
@@ -162,13 +163,7 @@ public class App extends Observable {
      * @return the selectionMode
      */
     public boolean isSelectionMode() {
-        return selectionMode;
+        return AbstractElementFactory.INST==null;
     }
 
-    /**
-     * @param selectionMode the selectionMode to set
-     */
-    public void setSelectionMode(boolean selectionMode) {
-        this.selectionMode = selectionMode;
-    }
 }
