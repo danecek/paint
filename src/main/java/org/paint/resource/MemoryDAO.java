@@ -29,6 +29,7 @@ public class MemoryDAO extends DAO {
                     cache = (Cache) oos.readObject();
                 } catch (IOException | ClassNotFoundException ex) {
                     Logger.getLogger(MemoryDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    cache = new Cache();
                 }
 
     }
